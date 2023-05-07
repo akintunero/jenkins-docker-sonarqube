@@ -1,3 +1,1 @@
-This is A sample txt file
-A modification
-ok
+This is a test file
