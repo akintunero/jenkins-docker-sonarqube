@@ -4,8 +4,8 @@
 
 Prerequisites
 
-   <li> AWS account </li>
-   <li>  Basic knowledge of Jenkins, SonarQube, and Github </li>
+   <ul> AWS account </ul>
+   <ul>  Basic knowledge of Jenkins, SonarQube, and Github </ul>
 
 Instructions
 
