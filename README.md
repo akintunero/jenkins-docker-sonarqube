@@ -1,58 +1,73 @@
+<h1> DevOps Project: Integrating SonarQube with Jenkins using Github Webhook </h1>
 
-Create three EC2 instances, one for Jenkins and the other for Sonarqube and the third one for docker, using the t2.medium instance type.
+<h2> This is a simple DevOps project that shows how to integrate SonarQube with Jenkins using Github webhook triggering. This project creates two EC2 instances, one for Jenkins and the other for Sonarqube. </h2>
 
-    Log in to your AWS account, and navigate to the EC2 Dashboard.
-    Click the "Launch Instance" button and choose the "Ubuntu Server 20.04 LTS" AMI.
-    Select the t2.medium instance type, and configure the instance details as required.
-    Add storage as required, and configure the security group to allow SSH access (port 22) and HTTP access (port 80).
-    Review your settings and launch the instance.
-    Repeat the above steps to create another EC2 instance for Sonarqube.
+Prerequisites
 
-Installing Jenkins
+   <li> AWS account </li>
+   <li>  Basic knowledge of Jenkins, SonarQube, and Github </li>
 
-  SSH into the Jenkins EC2 instance.
-  Set the hostname using the command:
-      
-      sudo hostnamectl set-hostname jenkins.
-      
-   Update the packages with
-      
-      sudo apt update
-      
-   Install OpenJDK 11 with 
+Instructions
+
+    Create two EC2 instances, one for Jenkins and the other for Sonarqube, using t2.medium instance type.
     
-    sudo apt install openjdk-11-jre.
+
+SSH into Jenkins EC2 instance and install Jenkins:
+
+        sudo hostnamectl set-hostname jenkins 
+        /bin/bash 
+        sudo apt update 
+        sudo apt install openjdk-11-jre java -version 
+        curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo tee \
+          /usr/share/keyrings/jenkins-keyring.asc > /dev/null 
+        echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
+          https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+          /etc/apt/sources.list.d/jenkins.list > /dev/null 
+        sudo apt-get update 
+        sudo apt-get install jenkins 
+
+
+Start Jenkins:
+
+        sudo systemctl enable jenkins 
+        sudo systemctl start jenkins 
+
+    Check Jenkins status:
+
+        sudo systemctl status jenkins 
+
+Retrieve Jenkins initial password:
+
+        cat /var/lib/jenkins/secrets/initialAdminPassword 
+
+Open Jenkins in the browser using the following URL format:
+
+        https://jenkins-ec2-ip:8080
     
-   Verify the installation with
-   
-    java -version.
+Create a new freestyle project, and under the SCM option, copy and paste the repository "HTTPS" URL from the Repository to the SCM Repository URL, and input the correct branch.
+
+Check "GitHub hook trigger for GITScm polling". This will trigger the pipeline automatically when a change is made to the repository.
+
+On Github, go to the repository settings and select "webhooks". Enter the Jenkins URL in the Payload URL textbox in the format http://jenkins-ip:8080/github-webhooks.
+
+Click on the "Let me select individual events" option and select "Pull request" and "Pushes" in the checklist made available.
     
-   Add the Jenkins repository key with the command:
     
-    curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo tee /usr/share/keyrings/jenkins-keyring.asc > /dev/null.
-    
-   Add the Jenkins repository with 
-   
-    echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/ | sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null.
-    
-   Update the packages again with
-    
-      sudo apt-get update
-      
-   Install Jenkins with 
-    
-      sudo apt-get install jenkins
-    
-   Enable and start the Jenkins service with: 
-    
-      sudo systemctl enable jenkins 
-      sudo systemctl start jenkins
-      
-   Check the status of the Jenkins service with:
-    
-    sudo systemctl status jenkins
-    
-   Retrieve the initial Jenkins password with 
-    
-    cat /var/lib/jenkins/secrets/initialAdminPassword.
-    Access Jenkins in your browser at https://jenkins-ec2-ip:8080
+SSH into Sonarqube EC2 instance and install Sonarqube:
+
+        sudo apt update 
+        sudo hostnamectl set-hostname sonarqube 
+        /bin/bash 
+        sudo apt install openjdk-17-jre 
+        wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-9.9.1.69595.zip 
+        sudo apt install unzip 
+        unzip sonarqube-9.9.1.69595.zip 
+        cd sonarqube-9.9.1.69595 
+        cd bin 
+        cd linux-x86-64 
+        sonar.sh start 
+
+    Launch SonarQube in the browser using the following URL format:
+    http://sonarqube-ec2-ip:9000
+
+That's it! You have successfully integrated SonarQube with Jenkins using Github webhook triggering.
