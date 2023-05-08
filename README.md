@@ -67,7 +67,8 @@ SSH into Sonarqube EC2 instance and install Sonarqube:
         cd linux-x86-64 
         sonar.sh start 
 
-    Launch SonarQube in the browser using the following URL format:
+
+ Launch SonarQube in the browser using the following URL format:
     http://sonarqube-ec2-ip:9000
 
 That's it! You have successfully integrated SonarQube with Jenkins using Github webhook triggering.
