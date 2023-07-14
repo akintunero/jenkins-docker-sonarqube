@@ -1,4 +1,4 @@
-<h1> DevOps Project: Integrating SonarQube with Jenkins using Github Webhook </h1>
+<h1> Integrating SonarQube with Jenkins using GitHub Webhook </h1>
 
 <h2> This is a simple DevOps project that shows how to integrate SonarQube with Jenkins using Github webhook triggering. This project creates two EC2 instances, one for Jenkins and the other for Sonarqube. </h2>
 
